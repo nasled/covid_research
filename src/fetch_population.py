@@ -4,8 +4,9 @@ import json
 ENDPOINT_URL = 'https://www.census.gov/popclock/data/population.php/us?date={0}'
 
 
-from parse_dataset import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW,\
-                        CASES_BY_STATE, DEATH_BY_STATE, RECOVERY_BY_STATE
+from src.parse_dataset import DATE_RAW
+
+
 # 20201103
 def convert_date(date):
     month, day, year = date.split('/')
