@@ -1,18 +1,68 @@
 # covid_research
 Research of COVID-19 impact and trend in USA using statistical approach
 
+The repository contains code source, paper source and presentation files of the COVID-19 research across USA and states based on public data from https://cdc.gov.
 
+The source code described in start execution priority.
+ 
+```
+fetch_covid_dataset.py
+```
+Downloads the dataset and saves result to local path.
 
-- fetch_covid_dataset
-- fetch_population and save result to parse_dataset/POPULATION_RATE_RAW
-- parse dataset
-- normalization
-- meta_statistics_info
-- classifier to get stats and csv for state plot
-- plot_linear_regression generates map (initial visualization)
-- plot_isotonic_regression
-- plot_multiple_curves
-- plot_states_map
-- plot_clusterization - CLUSTER
+```
+fetch_population.py
+```
+Parses population from endpoint and saves result to local path.
 
-meta_state_to_fips - fips code mapper
+```
+parse_dataset.py
+```
+Parses downloaded dataset and creates data structures.
+
+```
+normalization.py
+```
+Applies date difference algorithm, performs square root normalization and generates image plots for result values. 
+
+```
+meta_statistics_info.py
+```
+Saves statistical information form data structures' values.
+
+```
+classifier.py
+```
+Classifies states based on mean-feature and saves result to local path.
+
+```
+plot_linear_regression.py
+```
+Generates trend results of linear model for population, cases, death and recovery metrics. 
+
+```
+plot_isotonic_regression.py   
+```
+Generates isotonic model visualization for cases, death and recovery metrics.
+
+```
+plot_multiple_curves.py
+```
+Generates impact plots between population/death and cases/death metrics.
+
+```
+plot_states_map.py
+```
+Generates density recovery figure of US states. 
+
+```
+plot_kmeans_cluster.py
+```
+Generates cluster of US states based on k-means algorithm.  
+
+```
+meta_state_to_fips.py
+```
+Maps state to fips codes.
+
+[CDC](https://cdc.gov)
