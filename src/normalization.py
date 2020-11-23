@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+from parse_dataset import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW,\
+                        CASES_BY_STATE, DEATH_BY_STATE, RECOVERY_BY_STATE
 
 '''
 * DIFF ALGORITHM
@@ -59,7 +61,7 @@ def normalize_to_degree(list, degree = 1, as_list = True):
             result.append([i])
     return result
 
-from src.parse_dataset import CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW
+
 
 POPULATION_RATE_DIFF = set_difference(POPULATION_RATE_RAW)
 CASE_RATE_DIFF = set_difference(CASE_RATE_RAW)

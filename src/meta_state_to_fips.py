@@ -58,19 +58,27 @@ STATE_TO_FIPS_CODE = {
 }
 
 
-'''
-* MP was filtered and excluded
-* https://www2.census.gov/programs-surveys/popest/geographies/2019/
-'''
 
-DATASET_PATH = 'd:/OneDrive/655_pr/unit0_project/datasets/all-geocodes-v2019.csv'
-print('parsing dataset... ', DATASET_PATH)
+from config import MAIN_DATASET_PATH, STATES_DATASET_PATH, GEOCODES_DATASET_PATH, \
+                   CDC_ENDPOINT_URL, CENSUS_ENDPOINT_URL, POPULATION_JSON_PATH
+
+from normalization import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW,\
+                          CASES_BY_STATE, DEATH_BY_STATE, RECOVERY_BY_STATE,\
+                          POPULATION_RATE_DIFF, CASE_RATE_DIFF, DEATH_RATE_DIFF, RECOVERY_RATE_DIFF,\
+                          POPULATION_NORM_1D, CASE_RATE_NORM_1D, DEATH_RATE_NORM_1D, RECOVERY_RATE_NORM_1D,\
+                          POPULATION_NORM_1D_LIST, CASE_RATE_NORM_1D_LIST, DEATH_RATE_NORM_1D_LIST, RECOVERY_RATE_NORM_1D_LIST,\
+                          POPULATION_NORM_3D, CASE_RATE_NORM_3D, DEATH_RATE_NORM_3D, RECOVERY_RATE_NORM_3D,\
+                          POPULATION_NORM_3D_LIST, CASE_RATE_NORM_3D_LIST, DEATH_RATE_NORM_3D_LIST, RECOVERY_RATE_NORM_3D_LIST, \
+                          POPULATION_NORM_5D, CASE_RATE_NORM_5D, DEATH_RATE_NORM_5D, RECOVERY_RATE_NORM_5D, \
+                          POPULATION_NORM_5D_LIST, CASE_RATE_NORM_5D_LIST, DEATH_RATE_NORM_5D_LIST, RECOVERY_RATE_NORM_5D_LIST
+
+print('parsing dataset... ', GEOCODES_DATASET_PATH)
 
 # convert csv to dict
 def parse_csv_to_dict(csvfile):
     import csv
     dataset = {}
-    with open(DATASET_PATH, newline='') as csvfile:
+    with open(GEOCODES_DATASET_PATH, newline='') as csvfile:
         csvreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in csvreader:
             # print(row)
@@ -80,7 +88,7 @@ def parse_csv_to_dict(csvfile):
                 dataset[row[0]].append(row[0] + row[1])
     return dataset
 
-STATE_CODE_TO_FIPS_CODE = parse_csv_to_dict(DATASET_PATH)
+STATE_CODE_TO_FIPS_CODE = parse_csv_to_dict(GEOCODES_DATASET_PATH)
 
 # INPUT_DATA = {'WY': 'MEAN', 'NYC': 'OVERMEAN', 'OH': 'OVERMEAN', 'ID': 'MEAN', 'CO': 'MEAN', 'AZ': 'OVERMEAN', 'CT': 'MEAN', 'TN': 'OVERMEAN', 'MA': 'OVERMEAN', 'AL': 'OVERMEAN', 'VA': 'OVERMEAN', 'MI': 'OVERMEAN', 'MS': 'MEAN', 'IL': 'OVERMEAN', 'WI': 'OVERMEAN', 'NC': 'OVERMEAN', 'OR': 'MEAN', 'MT': 'MEAN', 'SC': 'OVERMEAN', 'KY': 'MEAN', 'PR': 'MEAN', 'OK': 'MEAN', 'UT': 'MEAN', 'DE': 'MEAN', 'MP': 'MEAN'}
 # for state in INPUT_DATA:

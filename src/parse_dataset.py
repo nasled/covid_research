@@ -1,14 +1,18 @@
 # import pandas
+import json
 
-DATASET_PATH = '/home/art/datasets/United_States_COVID-19_Cases_and_Deaths_by_State_over_Time_Nov_7.csv'
-print('parsing dataset... ', DATASET_PATH)
+from config import MAIN_DATASET_PATH, STATES_DATASET_PATH, GEOCODES_DATASET_PATH, \
+                   CDC_ENDPOINT_URL, CENSUS_ENDPOINT_URL, POPULATION_JSON_PATH
+
+print('parsing dataset... ', MAIN_DATASET_PATH)
 
 # convert csv to list
 def parse_csv(csvfile):
     import csv
     dataset = []
-    with open(DATASET_PATH, newline='') as csvfile:
-        csvreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+    with open(MAIN_DATASET_PATH, newline='') as csvfile:
+        # csvreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        csvreader = csv.reader(csvfile, quotechar='"', delimiter=',')
         '''
         0 - submission_date
         1 - state
@@ -18,15 +22,19 @@ def parse_csv(csvfile):
         14 - consent_death
         '''
         for row in csvreader:
+            # 10/21/2020,MN,"126,591",,,"1,060",13,"2,334","2,269",65,35,1,10/22/2020 01:34:46 PM,N/A,Agree
             if row[0] != 'submission_date' and row[3] != '' and row[8] != '' and \
                 row[13] == 'Agree' and row[14] == 'Agree' and \
                 row[3] != '0' and row[8] != '0':
                     # consent_cases,consent_deaths:
                 if row[0].split('/')[1] in ['01','05', '10', '15', '20', '25']:
-                    dataset.append([row[0], row[1], row[3], row[8]])
+                    # dataset was updated
+                    dataset.append([row[0], row[1], row[3].replace(',',''), row[8].replace(',','')])
     return dataset
 
-dataset = parse_csv(DATASET_PATH)
+dataset = parse_csv(MAIN_DATASET_PATH)
+
+print('dataset 0:', dataset[0])
 
 # group by date = state/case/death
 group_storage = {}
@@ -63,6 +71,8 @@ for date in sorted_dates:
         state, case, death = row
         if state == 'NYC':
             state = 'NY'
+        if state == 'MP':
+            continue
         if state not in cases_by_states_dict:
             cases_by_states_dict[state] = 0
             death_by_states_dict[state] = 0
@@ -95,46 +105,8 @@ RECOVERY_RATE_RAW = recovery_dict
 print('parsed points', len(CASE_RATE_RAW))
 
 
-POPULATION_RATE_RAW = {
-    '04/15/2020': 329519667,
-    '04/20/2020': 329541155,
-    '04/25/2020': 329562644,
-    '05/01/2020': 329588430,
-    '05/05/2020': 329606219,
-    '05/10/2020': 329628455,
-    '05/15/2020': 329650692,
-    '05/20/2020': 329672928,
-    '05/25/2020': 329695164,
-    '06/01/2020': 329726295,
-    '06/05/2020': 329746456,
-    '06/10/2020': 329771658,
-    '06/15/2020': 329796860,
-    '06/20/2020': 329822061,
-    '06/25/2020': 329847263,
-    '07/01/2020': 329877505,
-    '07/05/2020': 329899443,
-    '07/10/2020': 329926866,
-    '07/15/2020': 329954289,
-    '07/20/2020': 329981711,
-    '07/25/2020': 330009134,
-    '08/01/2020': 330047526,
-    '08/05/2020': 330069263,
-    '08/10/2020': 330096434,
-    '08/15/2020': 330123605,
-    '08/20/2020': 330150776,
-    '08/25/2020': 330177947,
-    '09/01/2020': 330215986,
-    '09/05/2020': 330238125,
-    '09/10/2020': 330265798,
-    '09/15/2020': 330293471,
-    '09/20/2020': 330321145,
-    '09/25/2020': 330348818,
-    '10/01/2020': 330382026,
-    '10/05/2020': 330400989,
-    '10/10/2020': 330424693,
-    '10/15/2020': 330448397,
-    '10/20/2020': 330472101,
-    '10/25/2020': 330495805,
-    '11/01/2020': 330528990,
-    '11/05/2020': 330546051
-}
+with open(POPULATION_JSON_PATH) as json_file:
+    data = json.load(json_file)
+    print(data)
+POPULATION_RATE_RAW = data
+print('population points parsed', len(POPULATION_RATE_RAW))
