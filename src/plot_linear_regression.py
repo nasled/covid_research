@@ -4,18 +4,7 @@ import numpy as np
 import math
 
 
-# # slope, intercept = custom_devised_regression(x,y)
-# def custom_devised_regression(x,y):
-#     n = np.size(x)
-#     m_x, m_y = np.median(x), np.median(y)
-#     SS_xy = np.sum(y**2 * x**2) - n * m_y * m_x
-#     SS_xx = np.sum(x**4) - n * m_x * m_x
-#     b_1 = SS_xy / SS_xx
-#     b_0 = m_y - b_1 * m_x
-#     return (b_1,b_0)
-
-
-from normalization import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW,\
+from src.normalization import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW,\
                           CASES_BY_STATE, DEATH_BY_STATE, RECOVERY_BY_STATE,\
                           POPULATION_RATE_DIFF, CASE_RATE_DIFF, DEATH_RATE_DIFF, RECOVERY_RATE_DIFF,\
                           POPULATION_NORM_1D, CASE_RATE_NORM_1D, DEATH_RATE_NORM_1D, RECOVERY_RATE_NORM_1D,\

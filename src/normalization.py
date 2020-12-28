@@ -1,7 +1,18 @@
 import matplotlib.pyplot as plt
+import json
 
-from parse_dataset import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW,\
+from src.config import MAIN_DATASET_PATH, STATES_DATASET_PATH, GEOCODES_DATASET_PATH, \
+                   CDC_ENDPOINT_URL, CENSUS_ENDPOINT_URL, POPULATION_JSON_PATH
+from src.parse_dataset import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW,\
                         CASES_BY_STATE, DEATH_BY_STATE, RECOVERY_BY_STATE
+
+
+POPULATION_RATE_RAW = {}
+with open(POPULATION_JSON_PATH) as json_file:
+    data = json.load(json_file)
+    print(data)
+POPULATION_RATE_RAW = data
+print('population points parsed', len(POPULATION_RATE_RAW))
 
 '''
 * DIFF ALGORITHM

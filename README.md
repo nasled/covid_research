@@ -11,14 +11,14 @@ fetch_covid_dataset.py
 Downloads the dataset and saves result to local path.
 
 ```
-fetch_population.py
-```
-Parses population from endpoint and saves result to local path.
-
-```
 parse_dataset.py
 ```
 Parses downloaded dataset and creates data structures.
+
+```
+fetch_population.py
+```
+Parses population from endpoint and saves result to local path.
 
 ```
 normalization.py

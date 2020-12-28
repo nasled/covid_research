@@ -2,10 +2,10 @@ import statistics as st
 import scipy.stats as sp
 import math
 
-from config import MAIN_DATASET_PATH, STATES_DATASET_PATH, GEOCODES_DATASET_PATH, \
+from src.config import MAIN_DATASET_PATH, STATES_DATASET_PATH, GEOCODES_DATASET_PATH, \
                    CDC_ENDPOINT_URL, CENSUS_ENDPOINT_URL, POPULATION_JSON_PATH
 
-from normalization import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW,\
+from src.normalization import DATE_RAW, CASE_RATE_RAW, DEATH_RATE_RAW, RECOVERY_RATE_RAW, POPULATION_RATE_RAW,\
                           CASES_BY_STATE, DEATH_BY_STATE, RECOVERY_BY_STATE,\
                           POPULATION_RATE_DIFF, CASE_RATE_DIFF, DEATH_RATE_DIFF, RECOVERY_RATE_DIFF,\
                           POPULATION_NORM_1D, CASE_RATE_NORM_1D, DEATH_RATE_NORM_1D, RECOVERY_RATE_NORM_1D,\
@@ -25,15 +25,14 @@ def print_metrics_info(title='', x=[]):
     print('set', x)
     print('mean', st.mean(x))
     print('median', st.median(x))
-    print('mode', st.mode(x))
+    # print('mode', st.mode(x))
     print('variance', st.variance(x))
     print('stdev', st.stdev(x))
-    print('quantiles', st.quantiles(x))
+    # print('quantiles', st.quantiles(x))
     print('iqr', sp.iqr(x))
     print('skew', sp.skew(x))
     print('kurtosis', sp.kurtosis(x))
     print('entropy', sp.entropy(x))
-
 
 # raw
 print_metrics_info('raw population', POPULATION_RATE_RAW.values())

@@ -1,7 +1,7 @@
 # import pandas
 import json
 
-from config import MAIN_DATASET_PATH, STATES_DATASET_PATH, GEOCODES_DATASET_PATH, \
+from src.config import MAIN_DATASET_PATH, STATES_DATASET_PATH, GEOCODES_DATASET_PATH, \
                    CDC_ENDPOINT_URL, CENSUS_ENDPOINT_URL, POPULATION_JSON_PATH
 
 print('parsing dataset... ', MAIN_DATASET_PATH)
@@ -103,10 +103,3 @@ CASE_RATE_RAW = case_dict
 DEATH_RATE_RAW = death_dict
 RECOVERY_RATE_RAW = recovery_dict
 print('parsed points', len(CASE_RATE_RAW))
-
-
-with open(POPULATION_JSON_PATH) as json_file:
-    data = json.load(json_file)
-    print(data)
-POPULATION_RATE_RAW = data
-print('population points parsed', len(POPULATION_RATE_RAW))
