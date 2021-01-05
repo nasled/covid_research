@@ -46,15 +46,16 @@ def classify_by_mean(data_dict):
         else:
             result_dict[state] = classes[1]
 
-
     sort_dict = dict(sorted(result_dict.items(), key=operator.itemgetter(1)))
-
     return sort_dict
 
 
 print('cases classifier', classify_by_mean(CASES_BY_STATE))
 print('death classifier', classify_by_mean(DEATH_BY_STATE))
 print('recovery classifier', classify_by_mean(RECOVERY_BY_STATE))
+
+classified_death = classify_by_mean(DEATH_BY_STATE)
+classified_recovery = classify_by_mean(RECOVERY_BY_STATE)
 
 print('writing dataset... ', STATES_DATASET_PATH)
 with open(STATES_DATASET_PATH, mode='w') as csv_file:
@@ -65,3 +66,14 @@ with open(STATES_DATASET_PATH, mode='w') as csv_file:
     for key in RECOVERY_BY_STATE:
         writer.writerow({'state': key, 'cases': CASES_BY_STATE[key], 'death': DEATH_BY_STATE[key], 'recovery': RECOVERY_BY_STATE[key]})
 
+
+print('latex table')
+table = []
+table.append(['State', 'Death', 'DeathClass', 'Recovery', 'RecoveryClass'])
+for key in RECOVERY_BY_STATE:
+    table.append([ key, str(DEATH_BY_STATE[key]), str(classified_death[key]), str(RECOVERY_BY_STATE[key]), str(classified_recovery[key]) ])
+
+latex = ''
+for row in table:
+    latex = latex + "\t\t&\t\t".join(row) + " \\\ \n"
+print(latex)

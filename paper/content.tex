@@ -1,0 +1,345 @@
+%!TEX root = main.tex
+
+% -------------
+\section{Introduction}
+\label{sec:introduction}
+
+COVID-19 caused global pandemic mode to be enabled in 2019 ~\cite{covid-wiki} ~\cite{arxiv-2009.12325}.
+
+The first case was identified in Wuhan, China, in December 2019.
+
+SARS-CoV-2 is a cause which is defined as severe acute respiratory syndrome coronavirus 2.
+
+COVID-19 is an effect of coronavirus disease 2019.
+
+Previously it was discovered 4 pandemics for the last century: in 1918, 1957, 1968 and 2009 ~\cite{cdc-pastpandemics}.
+
+The research is dedicated to the fifth pandemic mode of century - COVID-19.
+
+Technical part of research consists of applying following computer science methods over the \dbName{} dataset.
+
+\begin{itemize}
+    \item attribute selection
+    \item aggregation
+    \item pattern recognition
+    \item mean feature classification
+    \item linear and isotonic regression models
+    \item density map plotting
+    \item k-means clustering
+\end{itemize}
+
+
+% -------------
+\section{Normalization}
+\label{sec:normalization}
+
+Attribute Selection helps to clean data.
+
+Dataset consists of 15 unique properties.
+
+After applying method of attribute selection only 3 properties left.
+
+Total number of confirmed instances with submission date allows to gain more accurate numbers for predictor model.
+
+Other properties have missed or inconsistent\ref{tab:selected_attributes} values.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|l|r}
+    \toprule
+    Property               & Description                           & Type \\\midrule
+    submission\_date        & Date of counts                        & Date \& Time \\
+    conf\_cases             & Total confirmed cases                 &  Number  \\
+    conf\_death             & Total number of confirmed deaths      &  Number  \\
+    \bottomrule
+    \end{tabular}
+    \caption{Selected dataset attributes ~\cite{cdc-dataset}}
+    \label{tab:selected_attributes}
+\end{table}
+
+
+The dataset has \dbTotalInstances{} number of instances to work with.
+
+In our research actual range was used - 04/15/20 - 12/27/20 with 0 as starting point at 04/01/20.
+
+Total discovered points to works with is \textit{55}.
+
+Selected attributes were grouped by 1, 5, 10, 15, 20, 25 days of each month with have medium values.
+
+Numbers have cumulative feature which is shown in their increasing exponential progression~\ref{tab:source_numbers}.
+
+% Numbers are close to estimated and proper methodology requires advanced data ~\cite{natstcopr-methv2}.
+
+Recovery formula~\ref{eq:recovery} has been introduced to increase accuracy of research and observe deviations.
+
+\begin{equation}
+     Recovery = Case - Death
+    \label{eq:recovery}
+\end{equation}
+
+\begin{figure}[h]
+    \includegraphics*[width=4cm, height=4cm]{../src/output/death.png}
+    \includegraphics*[width=4cm, height=4cm]{../src/output/recovery.png}
+    \caption{Raw Death/Recovery Rates}
+    \label{fig:raw_data}
+\end{figure}
+
+The slope of first image has sharp slope in the beginning and linear slope form in the tail.
+
+Meanwhile beginning of another image has linear line slope and the tail has sharp curve form.
+
+Both functions growth bounded above by {\textit{n log n} }~\ref{eq:asymptotic_nlogn} and below by $\sqrt{n}$~\ref{eq:asymptotic_n} asymptotically.
+
+\begin{equation}
+    f(x) \in \O O(n log n)
+    \label{eq:asymptotic_nlogn}
+\end{equation}
+
+\begin{equation}
+    f(x) \in \Omega (\sqrt{n})
+    \label{eq:asymptotic_n}
+\end{equation}
+
+% AN Normalization
+To get rid off increasing progression that the slope is too steep the shatter semi-curve segmentation algorithm was developed~\ref{fig:raw_data}~\ref{alg:shatter_segmentation}.
+
+\begin{algorithm}[h]
+    \begin{algorithmic}
+        \Function{ShatterSegmentation}{DictionarySet $F$}
+	    \State $Result \gets F$\Comment{Copy Data}
+            \For{($i=0$; $\;i < \dbTotalInstances{} $; $\;i$++)}
+                \State $A \gets F_i$\Comment{Current Day}
+                \State $B \gets F_{i+1}$\Comment{Next Day}
+                \State $Result_i \gets A- B $\Comment{Difference}
+            \EndFor
+            \State \Return $Result $
+        \EndFunction
+    \end{algorithmic}
+    \caption{Shatter semi-curve segmentation algorithm}
+    \label{alg:shatter_segmentation}
+\end{algorithm}
+
+Applied segmented algorithm results~\ref{fig:segmentated_data}.
+
+\begin{figure}[h]
+    \includegraphics*[width=4cm, height=4cm]{../src/output/death-diff.png}
+    \includegraphics*[width=4cm, height=4cm]{../src/output/recovery-diff.png}
+    \caption{Segmented Death/Recovery Rates}
+    \label{fig:segmentated_data}
+\end{figure}
+
+The first image has strong noticeable wave in the beginning of the line.
+
+The following distribution of the first image is almost normal except the rising wave in the tail.
+
+The second image has 3 noticeable waves.
+
+First and second waves are almost similar except the biggest wave size in the tail.
+
+% todo - draw interpolation lines over
+
+Alternatively, square-normalization approach was applied to reduce overall value of Y-axis and to preserve curve angles as a vector ratio scale~\ref{fig:normalized_segmentated_data}.
+
+\begin{figure}[h]
+    \includegraphics*[width=4cm, height=4cm]{../src/output/death-diff-sqrt-norm.png}
+    \includegraphics*[width=4cm, height=4cm]{../src/output/recovery-diff-sqrt-norm.png}
+    \caption{Square-normalization Death/Recovery Rates}
+    \label{fig:normalized_segmentated_data}
+\end{figure}
+
+Results of the applied shatter segmentation~\ref{alg:shatter_segmentation} and square-normalization algorithms. %~\ref{graph:square_normalization}.
+
+Waves became less perceptible and more smoothly because of angles acute forms.
+
+% describe that curve gained noise because of normalization
+
+% mention that low death rate was in middle of june
+
+% two covid cases waves may and aug
+
+Furthermore, Segmentation algorithm~\ref{alg:shatter_segmentation} was applied to population dataset~\ref{fig:raw_and_segmentated_population}.
+
+\begin{figure}[h]
+    \includegraphics*[width=4cm, height=4cm]{../src/output/population.png}
+    \includegraphics*[width=4cm, height=4cm]{../src/output/population-diff.png}
+    \caption{Raw and Segmented population of USA 2020}
+    \label{fig:raw_and_segmentated_population}
+\end{figure}
+
+The first function bounded above by {\textit{n log n} }~\ref{eq:asymptotic_nlogn} and below by $\sqrt{n}$~\ref{eq:asymptotic_n} asymptotically.
+
+The second image has noticeable wave in the middle of image.
+
+% todo - finish statistical part
+
+% Gained statistical properties from curves \ref{table:graph_stats}.
+
+% https://en.wikipedia.org/wiki/Big_O_notation#/media/File:Comparison_computational_complexity.svg
+
+% https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
+
+% http://ctan.math.utah.edu/ctan/tex-archive/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf
+
+
+
+% -------------
+% Results
+% -------------
+\section{Results}
+\label{sec:results}
+
+
+% CORRELATION
+\subsection{COVID-19 impact on population of USA}
+\label{subsec:covid-19-impact-on-population-of-usa}
+
+\begin{figure}[h]
+    \includegraphics*[width=9cm, height=5cm]{../src/output/cases_and_death_diff.png}
+    \caption{Case and Death Rate}
+    \label{fig:cases_death_corr}
+\end{figure}
+
+Death rate curve has only one small wave in the beginning of the line.
+
+Case rate has 3 waves with the strongest wave in the tail of the curve.
+
+The death rate function has linear form with constant ~\ref{eq:asymptotic_one} asymptotic.
+
+\begin{equation}
+    f(x) \in \O O(1)
+    \label{eq:asymptotic_one}
+\end{equation}
+
+Only small impact on population is noticeable in the beginning of the timeline~\ref{fig:cases_death_corr}.
+
+\begin{figure}[h]
+    \includegraphics*[width=9cm, height=5cm]{../src/output/population_and_death_diff.png}
+    \caption{Population and Death Rate Correlation}
+    \label{fig:pop_death_corr}
+\end{figure}
+
+The death rate function~\ref{fig:pop_death_corr} has 1 wave in the beginning of the timeline.
+
+Same as on the previous figure, the death rate function~\ref{fig:pop_death_corr}  has linear form with constant ~\ref{eq:asymptotic_one} asymptotic.
+
+The population rate has 1 wave in the middle of the timeline.
+
+It can be assumed because of that the coronavirus death rate has no effect on population of the USA, otherwise the death rate suppose to have a wave in the middle.
+
+% todo: sravit civfu i viyasnit otnoshenie (ratio)
+
+% On year 2020 World Population reported - \textit{7,794,798,739} with density \textit{52} person per square kilometer ~\cite{worldometer-population}.
+
+
+
+% REGRESSION
+\subsection{Regressions Tendency}
+\label{subsec:regressions-tendency}
+
+% Public algorithms helps researchers to compare algorithms and to observe their accuracy.
+
+Multiple regression models were used in research to cross-validate estimated forecast results~\ref{fig:recovery_regressions}.
+
+\begin{figure}[h]
+    \includegraphics*[width=4cm, height=4cm]{../src/output/recovery-linear-regression.png}
+    \includegraphics*[width=4cm, height=4cm]{../src/output/recovery_isotonic_regression.png}
+    \caption{Recovery Rate Linear and Isotonic Regressions}
+    \label{fig:recovery_regressions}
+\end{figure}
+
+Both models have similar results with small deviation.
+
+Models show that recovery trend is growing up.
+
+% todo: describe algorithm in details
+
+\begin{figure}[h]
+    \includegraphics*[width=4cm, height=4cm]{../src/output/death_linear-regression.png}
+    \includegraphics*[width=4cm, height=4cm]{../src/output/death_isotonic_regression.png}
+    \caption{Death Rate Linear and Isotonic Regressions}
+    \label{fig:death_regressions}
+\end{figure}
+
+Both functions strives for negative value and trend is death negative~\ref{fig:death_regressions}.
+
+It can be concluded that trend is positive based on that
+
+\begin{itemize}
+    \item death rate is going down~\ref{fig:death_regressions}
+    \item recovery rate is going up~\ref{fig:recovery_regressions}
+    \item population rate is going up~\ref{fig:pop_death_corr}
+\end{itemize}
+
+
+
+% CLASSIFICATION
+\subsection{Data Classification}
+\label{subsec:data-classification}
+
+Data~\ref{tab:list_of_raw_properties} was grouped by state with total count of 26 states~\ref{tab:classified_states}.
+
+Each state was classified by mean feature~\cite{wiki-mean} for death and recovery attributes as threshold to identify states with inflated rates.
+
+Death feature classification results: 17 state are mean and 9 are overmean~\ref{tab:classified_states}.
+
+Recovery feature classification results: 15 state are mean and 11 are overmean~\ref{tab:classified_states}.
+
+\begin{figure}[h]
+    \includegraphics*[width=\linewidth, keepaspectratio]{../src/output/states_death.png}
+    \caption{States Map By Death Attribute}
+    \label{fig:states_death}
+\end{figure}
+
+New York state which is located in the north-east of the map has the highest death rate density between among states~\ref{fig:states_death}.
+
+\begin{figure}[h]
+    \includegraphics*[width=\linewidth, keepaspectratio]{../src/output/states_recovery.png}
+    \caption{States Map By Recovery Attribute}
+    \label{fig:states_recovery}
+\end{figure}
+
+Illinois state which is located in the middle of the map has the highest recovery rate~\ref{fig:states_recovery}.
+
+
+
+% CLUSTERING
+\subsection{Clustering}
+\label{subsec:clustering}
+
+Total \textit{2} sub-clusters have been generated based on k-means algorithms using unsupervised learning~\ref{fig:states_cluster}.
+
+The k-mean algorithm experienced error when more than 5 clusters were calculated.
+
+% todo: describe k-means algorithm in details
+
+\begin{figure}[h]
+    \includegraphics*[width=\linewidth, keepaspectratio]{../src/output/cluster.png}
+    \caption{Cluster}
+    \label{fig:states_cluster}
+\end{figure}
+
+
+
+
+% Conclusion
+\section{Conclusion}
+\label{sec:conclusion}
+
+Number of positive cases compared to death rate has positive impact on recovery tendency and do not affect overall population tendency of USA\@.
+
+However, COVID-19 is dangerous decease could affect anyone.
+
+All groups of people could be infected with virus - the president of USA was diagnosed positive with COVID-19  approximately 10/01/2020 ~\cite{twitter-1311892190680014849}.
+
+\enquote{Anyone who was a direct contact of President Trump or known COVID-19 cases needs to quarantine and should get tested ~\cite{mn-100220}}.
+
+\enquote{More than a dozen people in President Donald Trump's circle -- including Trump himself -- have recently tested positive for Covid-19 ~\cite{cnn-20201004}}.
+
+The research does not exclude a small possibility of a second wave of coronavirus under new abbreviation of COVID-20 in 2021.
+
+COVID-19 had impact on business.
+
+Many companies claim Chapter 11 due to COVID-19 impact on business. \enquote{For some, the pandemic was a chance to open a new chapter. But for many businesses, the swift and stark economic shutdown led straight to Chapter 11.  ~\cite{fortune-20200804}} $\blacksquare$.
+
+
+

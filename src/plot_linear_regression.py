@@ -78,5 +78,17 @@ def main():
     plt.title('Recovery of COVID-19')
     plt.savefig('output/recovery-linear-regression.png')
 
+    y = np.array(DEATH_RATE_DIFF)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+    curve = intercept + slope * x
+    plt.figure(figsize=(8, 8))
+    plt.plot(x, y, label='instances')
+    plt.plot(x, curve, 'r', label='forecast')
+    plt.legend()
+    plt.xlabel('Timeline')
+    plt.ylabel('Recovery')
+    plt.title('Recovery of COVID-19')
+    plt.savefig('output/death_linear-regression.png')
+
 if __name__ == '__main__':
     main()

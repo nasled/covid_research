@@ -1,0 +1,98 @@
+\documentclass[technote,a4paper,leqno]{IEEEtran}
+\pdfoutput=1
+
+\usepackage[utf8]{inputenc}
+\usepackage[USenglish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage[binary-units=true,detect-weight=true, detect-family=true]{siunitx}
+\DeclareSIUnit\pixel{px}
+\usepackage{caption}
+
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage[raiselinks=true,
+            bookmarks=true,
+            bookmarksopenlevel=1,
+            bookmarksopen=true,
+            bookmarksnumbered=true,
+            breaklinks,
+            hyperindex=true,
+            plainpages=false,
+            pdfpagelabels=true,
+            pdfborder={0 0 0.5}]{hyperref}
+\def\UrlBreaks{\do\/\do-}
+
+
+\usepackage[inline]{enumitem}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{braket}
+\usepackage{algorithm,algpseudocode}
+
+% Packages for symbols
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\def\wasyfamily{\fontencoding{U}\fontfamily{wasy}\selectfont}
+\usepackage{upgreek}
+\usepackage{marvosym}
+\usepackage{textcomp}
+\usepackage{dsfont}
+\usepackage{esint}
+\usepackage{cmll}
+\usepackage{stmaryrd}
+\usepackage{skull}
+
+% Make document nicer
+\usepackage{parskip}
+\usepackage{multirow}
+\usepackage{microtype}
+
+% test
+\usepackage{cuted}
+
+\usepackage{xspace}
+
+\newcommand*\elide{\textup{[\,\dots]}\xspace}
+
+\usepackage[nameinlink, noabbrev, capitalise]{cleveref}
+\usepackage{graphicx}
+
+% ORCID: http://orcid.org/0000-0002-7630-1972
+\title{Research of COVID-19 impact and trend in USA using statistical approach.}
+\author{
+    \IEEEauthorblockN{Artsiom Naslednikau}\\
+    \IEEEauthorblockA{Email: art.naslednikau@gmail.com}
+}
+
+\hypersetup{
+    pdfauthor   = {Artsiom Naslednikau},
+    pdfkeywords = {covid, attribute selection, aggregation, pattern recognition, feature classification, regression, k-means clustering, visualization},
+    pdfsubject  = {covid, pattern recognition},
+    pdftitle    = {Research of COVID-19 impact and trend in USA using statistical approach},
+}
+
+% Variables
+\newcommand{\dbTotalPoints}{\num{55}}
+\newcommand{\dbTotalInstances}{\num{1721928}}
+\newcommand{\dbSource}{Centers for Disease Control and Prevention}
+\newcommand{\dbName}{United States COVID-19 Cases and Deaths by State over Time}
+\newcommand{\dbDownloadURL}{\url{https://data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/9mfq-cb36}}
+
+
+% start
+\begin{document}
+\maketitle
+
+% content
+\input{abstract}
+\input{content}
+\bibliographystyle{IEEEtranSA}
+\bibliography{literatur}
+\input{appendix}
+
+% finish
+\end{document}

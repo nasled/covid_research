@@ -103,3 +103,15 @@ CASE_RATE_RAW = case_dict
 DEATH_RATE_RAW = death_dict
 RECOVERY_RATE_RAW = recovery_dict
 print('parsed points', len(CASE_RATE_RAW))
+
+
+print('latex table')
+table = []
+table.append(['Date', 'Case', 'Death', 'Recovery'])
+for date in DATE_RAW:
+    table.append([ str(date), str(CASE_RATE_RAW[date]), str(DEATH_RATE_RAW[date]), str(RECOVERY_RATE_RAW[date]) ])
+
+latex = ''
+for row in table:
+    latex = latex + "\t\t&\t\t".join(row) + " \\\ \n"
+print(latex)

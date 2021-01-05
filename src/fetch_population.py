@@ -39,3 +39,15 @@ with open(POPULATION_JSON_PATH, 'w+') as outfile:
 # put in parse dataset
 print(population_dict)
 print('population json saved to:', POPULATION_JSON_PATH)
+
+
+print('latex table')
+table = []
+table.append(['Date', 'Population'])
+for date in DATE_RAW:
+    table.append([ str(date), str(population_dict[date]) ])
+
+latex = ''
+for row in table:
+    latex = latex + "\t\t&\t\t".join(row) + " \\\ \n"
+print(latex)
