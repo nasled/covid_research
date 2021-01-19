@@ -1,9 +1,11 @@
 MAIN_DOCUMENT = main
 
 make:
-	pdflatex $(MAIN_DOCUMENT).tex -output-format=pdf
+	pdflatex -output-directory=$(CURDIR) -output-format=pdf $(MAIN_DOCUMENT).tex
 	bibtex $(MAIN_DOCUMENT)
+	#pdflatex -output-directory=$(CURDIR) -output-format=pdf $(MAIN_DOCUMENT).tex
 	make clean
+	mv main.pdf output/paper.pdf
 
 arxiv:
 	zip -r upload.zip . -x \*.git\* -x MAKEFILE -x *.zip -x *.pdf

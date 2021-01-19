@@ -3,6 +3,8 @@ Research of COVID-19 impact and trend in USA using statistical approach
 
 The repository contains code source, paper source and presentation files of the COVID-19 research across USA and states based on public data from https://cdc.gov.
 
+#### Source Code Execution
+
 The source code described in start execution priority.
  
 ```
@@ -64,5 +66,12 @@ Generates cluster of US states based on k-means algorithm.
 meta_state_to_fips.py
 ```
 Maps state to fips codes.
+
+
+#### Paper Build
+```
+make
+```
+Builds paper and saves to output folder. 
 
 [CDC](https://cdc.gov)

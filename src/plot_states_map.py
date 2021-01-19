@@ -17,14 +17,14 @@ df = pd.read_csv(STATES_DATASET_PATH)
 
 fig = go.Figure(data=go.Choropleth(
     locations=df['state'],
-    z=df['recovery'].astype(float),
+    z=df['death'].astype(float),
     locationmode='USA-states',
     colorscale='haline',
     colorbar_title='Rate',
 ))
 
 fig.update_layout(
-    title_text='COVID-19 States by Recovery',
+    title_text='COVID-19 States by Death',
     geo_scope='usa',
 )
 
