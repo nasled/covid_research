@@ -3,8 +3,8 @@ MAIN_DOCUMENT = main
 make:
 	pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-directory=$(CURDIR) -output-format=pdf $(MAIN_DOCUMENT).tex
 	bibtex $(MAIN_DOCUMENT)
-	pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=/home/art/PycharmProjects/covid_research/paper main.tex
-	pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=/home/art/PycharmProjects/covid_research/paper main.tex
+	pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=$(CURDIR) main.tex
+	pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=$(CURDIR) main.tex
 	make clean
 	mv main.pdf output/paper.pdf
 
